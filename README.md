@@ -1,4 +1,4 @@
-# Business-Questions-Qql-Olist
+# Business-Questions-Sql-Olist
 
 
 
