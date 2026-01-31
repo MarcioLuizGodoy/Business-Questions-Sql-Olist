@@ -215,6 +215,49 @@ having  count(distinct customer_id ) > 10
 
 
 
+													
+													
+																--INNER JOIN 
+			
+			
+			
+--Gerar uma tabela de dados com 10 linhas, contendo o id do pedido, o id do cliente, o status do pedido, o id do produto e o preço do produto.
 
+select o.order_id, o.customer_id, o.order_status, oi.product_id, oi.price
+from orders o inner join order_items oi on (oi.order_id = o.order_id )
+limit 500;
+
+
+--Gerar uma tabela de dados com 20 linhas, contendo o id do pedido, o estado do cliente, a cidade do cliente, o status do pedido, o id do produto e o preço do produto,
+--somente para clientes do estado de São Paulo
+
+select o.order_id, c.customer_state, c.customer_city, o.order_status, oi.product_id, oi.price 
+from orders  o inner join order_items oi on ( oi.order_id = o.order_id ) inner join customer c on (c.customer_id = o.customer_id)
+where c.customer_state  = 'SP'
+limit 20; 
+
+
+--Gerar uma tabela de dados com 50 linhas, contendo o id do pedido, o estado e a cidade do cliente, o status do pedido, o nome da categoria do produto e o preço do
+--produto, somente para pedidos com o status igual a cancelado.
+
+select o.order_id , c.customer_state , c.customer_city , o.order_status , p.product_category_name ,oi.price 
+from orders o inner join order_items oi  on (oi.order_id =o.order_id ) inner join customer c  on( c.customer_id  = o.customer_id) inner join products p  on (p.product_id = oi.product_id)
+where o.order_status  = 'canceled'
+limit 50;
+
+
+
+--Gerar uma tabela de dados com 80 linhas, contendo o id do pedido, o estado e a cidade do cliente, o status do pedido, o nome da categoria do produto, o preço do produto,
+--a cidade e o estado do vendedor e a data de aprovação do pedido, somente para os pedidos aprovadas a partir do dia 16 de Setembro de 2016.
+
+select o.order_id, c.customer_state ,c.customer_city , o.order_status , p.product_category_name , oi.price , s.seller_state ,s.seller_city ,o.order_approved_at 
+from orders o inner join order_items oi  on( oi.order_id = o.order_id ) inner join customer c on (c.customer_id = o.customer_id) inner join products p on (p.product_id = oi.product_id) 
+inner join sellers s on (s.seller_id =oi.seller_id )
+where date (o.order_approved_at ) > '2016-8-16'
+limit 80; 
+
+
+--Gerar uma tabela de dados com 10 linhas, contendo o id do pedido, o estado e a cidade do cliente, o status do pedido, o nome da categoria do produto, o preço do produto, a
+--cidade e o estado do vendedor, a data de aprovação do pedido e o tipo de pagamento, somente para o tipo de pagamento igual a boleto.
 
 
