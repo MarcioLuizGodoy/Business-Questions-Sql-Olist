@@ -1,19 +1,13 @@
         -- Operadores de comparação (Exercicio sobre a base de dados Olist (Kaggle) )
         
-        
-        
-        
-        
         -- As perguntas do CEO 
-        
 
 
-select
-    count(distinct(customer_id)) as numero_clientes
-from
-    customer
-where
-    customer_state = 'SP';
+-- sem pergunta nesse primeiro bloco
+
+select count(distinct(customer_id)) as numero_clientes
+from customer
+where customer_state = 'SP';
 
 
 -- Qual o número total de pedidos únicos feitos no dia 08 de Outubro de 2016?
@@ -29,11 +23,15 @@ select count(distinct(order_id))
 from orders
 where date( order_purchase_timestamp) > '2016-10-08';
 
+
+
 -- Qual o número total de pedidos únicos feitos com a data limite de envio, a partir do dia 08 de Outubro de 2016 incluso?
 
 select count(distinct(order_id))
 from order_items
 where date( shipping_limit_date) > '2016-10-08';
+
+
 
 -- Qual é o número total de pedidos únicos e o valor médio do frete para pedidos com valor abaixo de R$ 1.100?
 
@@ -46,23 +44,12 @@ where price < 1100;
 --e os valores máximo, mínimo e médio do frete para pedidos com valor abaixo de R$ 1.100,
 --agrupados por cada vendedor?
 
-
 select * from order_items; -- consulta exploratoria dos nomes das colunas
 
-
-select 
-seller_id as vendeor,
-count(distinct(order_id)) as total_pedidos_unicos, 
-min(shipping_limit_date) as data_minima, 
-max(shipping_limit_date) as data_maxima, 
-
-max(freight_value) as frete_maximo,
-min(freight_value) as frete_minimo, 
-avg(freight_value) as media_do_frete
+select  seller_id as vendeor, count(distinct(order_id)) as total_pedidos_unicos,  min(shipping_limit_date) as data_minima,  max(shipping_limit_date) as data_maxima, max(freight_value) as frete_maximo,min(freight_value) as frete_minimo, avg(freight_value) as media_do_frete
 from order_items
 where price< 1100
 group by seller_id;
-
 
 
                     -- Operadores Booleanos
@@ -107,6 +94,7 @@ where payment_installments >= 1 and payment_installments <= 5 or payment_value >
 group by payment_installments;
 
 
+
 --Qual a quantidade de pedidos com o status em processamento ou cancelada
 --acontecem com a data estimada de entrega maior que 01 de Janeiro de 2017 ou menor que
 --23 de Novembro de 2016?
@@ -115,9 +103,7 @@ select order_status from orders;  -- consulta investigativa pra formular a de ba
 
 select order_status, count(order_id) as pedidos
 from orders
-where (order_status ='processing' or order_status = 'canceled') 
-and 
-(order_estimated_delivery_date >'2017-01-01' or  order_estimated_delivery_date <'2016-11-23')
+where (order_status ='processing' or order_status = 'canceled') and (order_estimated_delivery_date >'2017-01-01' or  order_estimated_delivery_date <'2016-11-23')
 group by order_status;
 
 
@@ -127,17 +113,10 @@ group by order_status;
 
 select product_category_name, count (product_id)
 from  products
-where (
-product_category_name = 'perfumaria'
-or product_category_name = 'brinquedos' 
-or product_category_name = 'esporte_lazer' 
-or product_category_name = 'cama_mesa_banho' 
-or product_category_name = 'moveis_escritorio') 
-and ( product_photos_qty > 5 and product_weight_g > 5 and product_height_cm > 10 and product_width_cm > 20)
+where ( product_category_name = 'perfumaria'or product_category_name = 'brinquedos' or product_category_name = 'esporte_lazer' or product_category_name = 'cama_mesa_banho' or product_category_name = 'moveis_escritorio') 
+		and ( product_photos_qty > 5 and product_weight_g > 5 and product_height_cm > 10 and product_width_cm > 20)	
 group by product_category_name;
 
-
-                        
 
 
 
@@ -153,6 +132,8 @@ where order_status in ('processing', 'shipped', 'delivered') and  order_purchase
 group by order_status
 having count(distinct(customer_id))> 5;
 
+
+
 -- Mostre a quantidade total dos pedidos e o valor total do pagamento, para pagamentos entre 1 e 5 prestações ou um valor de pagamento acima de R$ 5000.
 
 select payment_installments, count(order_id) as total_pedidos , sum(payment_value) as total_pagamentos
@@ -167,15 +148,9 @@ group by payment_installments;
 --altura maior que 10 cm, uma largura maior que 20 cm. Mostra somente as linhas com mais
 --de 10 produtos únicos.
 
-select 
-product_category_name, 
-count(distinct product_id) as produtos_unicos
+select  product_category_name, count(distinct product_id) as produtos_unicos 
 from products
-where product_category_name in ('perfumaria','brinquedos','esporte_lazer','cama_mesa_banho') 
-and product_photos_qty between 5 and 10
-and product_weight_g not between 1 and 5
-and  product_height_cm > 10
-and product_width_cm > 20
+where product_category_name in ('perfumaria','brinquedos','esporte_lazer','cama_mesa_banho') and product_photos_qty between 5 and 10 and product_weight_g not between 1 and 5 and  product_height_cm > 10 and product_width_cm > 20
 group by product_category_name
 having count( distinct product_id ) > 10;
 
@@ -185,8 +160,7 @@ having count( distinct product_id ) > 10;
 
 select geolocation_state, count( distinct geolocation_city) as cidades
 from geolocation 
-where geolocation_state in ('SP', 'RJ') 
-and (geolocation_lat > -24.54 and geolocation_lng < -45.63)
+where geolocation_state in ('SP', 'RJ')  and (geolocation_lat > -24.54 and geolocation_lng < -45.63)
 group by geolocation_state;
 
 
@@ -214,10 +188,8 @@ group by customer_city, customer_state
 having  count(distinct customer_id ) > 10
 
 
-
-													
-													
-																--INNER JOIN 
+	
+							--INNER JOIN 
 			
 			
 			
@@ -265,3 +237,4 @@ from orders o inner join order_items oi  on (oi.order_id = o.order_id) inner joi
 				inner join  sellers s on ( s.seller_id = oi.seller_id)  inner join order_payments op on( op.order_id = o.order_id)
 where 	op.payment_type = 'boleto'
 limit 10;
+
