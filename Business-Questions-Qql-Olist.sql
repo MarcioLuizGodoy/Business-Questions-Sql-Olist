@@ -260,4 +260,8 @@ limit 80;
 --Gerar uma tabela de dados com 10 linhas, contendo o id do pedido, o estado e a cidade do cliente, o status do pedido, o nome da categoria do produto, o preço do produto, a
 --cidade e o estado do vendedor, a data de aprovação do pedido e o tipo de pagamento, somente para o tipo de pagamento igual a boleto.
 
-
+select o.order_id ,c.customer_state ,c.customer_city,o.order_status ,p.product_category_name ,oi.price,s.seller_city,s.seller_state,o.order_approved_at,op.payment_type
+from orders o inner join order_items oi  on (oi.order_id = o.order_id) inner join customer c on( c.customer_id =o.customer_id ) inner join products p  on ( p.product_id =oi.product_id )
+				inner join  sellers s on ( s.seller_id = oi.seller_id)  inner join order_payments op on( op.order_id = o.order_id)
+where 	op.payment_type = 'boleto'
+limit 10;
