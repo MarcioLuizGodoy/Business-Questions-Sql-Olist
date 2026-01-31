@@ -79,8 +79,7 @@ group by geolocation_state;
 
 select count(distinct order_id), count(product_id), avg( price )
 from order_items
-where freight_value > 20 
-and date(shipping_limit_date) >= '2016-10-01' 
+where freight_value > 20 and date(shipping_limit_date) >= '2016-10-01' 
 and date(shipping_limit_date) <='2016-10-31';
 
 
@@ -113,8 +112,7 @@ group by order_status;
 
 select product_category_name, count (product_id)
 from  products
-where ( product_category_name = 'perfumaria'or product_category_name = 'brinquedos' or product_category_name = 'esporte_lazer' or product_category_name = 'cama_mesa_banho' or product_category_name = 'moveis_escritorio') 
-		and ( product_photos_qty > 5 and product_weight_g > 5 and product_height_cm > 10 and product_width_cm > 20)	
+where ( product_category_name = 'perfumaria'or product_category_name = 'brinquedos' or product_category_name = 'esporte_lazer' or product_category_name = 'cama_mesa_banho' or product_category_name = 'moveis_escritorio') and ( product_photos_qty > 5 and product_weight_g > 5 and product_height_cm > 10 and product_width_cm > 20)	
 group by product_category_name;
 
 
