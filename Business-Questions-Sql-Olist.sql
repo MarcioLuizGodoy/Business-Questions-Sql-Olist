@@ -236,3 +236,32 @@ from orders o inner join order_items oi  on (oi.order_id = o.order_id) inner joi
 where 	op.payment_type = 'boleto'
 limit 10;
 
+			--  Left Join
+
+
+
+--  Gerar uma tabela de dados com 20 linhas e contendo as seguintes colunas: 1) Id do pedido, 2) status do pedido, 3) id do produto, 4) categoria do produto, 5) avaliação do pedido,
+--6) valor do pagamento, 7) tipo do pagamento, 8) cidade do vendedor, 9) latitude e longitude da cidade do vendedor.   ------
+
+select o.order_id, o.order_status, oi.product_id, p.product_category_name, t.review_score, op.payment_value, op.payment_type, s.seller_city, g.geolocation_lat, g.geolocation_lng 
+from orders o left join order_items oi on( o.order_id = oi.order_id ) left join products p on( p.product_id = oi.product_id ) left join order_reviews t on( t.order_id  = o.order_id )
+	left join order_payments op on ( op.order_id = o.order_id ) left join sellers s on ( s.seller_id  = oi.seller_id) 
+	left join geolocation g on( g.geolocation_zip_code_prefix = s.seller_zip_code_prefix )
+limit 20;
+
+
+
+-- Quantos tipos de pagamentos foram usados pelo cliente para pagar o pedido 'e481f51cbdc54678b7cc49136f2d6af7ʼ  -----
+
+select o.order_id, o.order_status ,  op.payment_type
+from orders o left join order_payments op on( o.order_id  = op.order_id  ) left join customer c on ( c.customer_id  = o.customer_id) 
+where o.order_id  = 'e481f51cbdc54678b7cc49136f2d6af7'
+limit 20;
+
+
+--  Quantos pedidos tem mais de 5 items distintos?
+
+select o.order_id as id  , count (distinct oi.product_id ) as quantidade_de_produtos
+from orders o left join order_items oi on ( oi.order_id  = o.order_id) 
+group by o.order_id 
+having count (distinct oi.product_id  ) > 5;
