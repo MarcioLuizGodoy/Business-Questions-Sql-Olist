@@ -312,6 +312,45 @@ where  oi.product_id  is null
 
 
 
+			-- SubQuery's 
+
+
+
+--  Exemplo
+
+select oi.product_id , avg ( oi.price )
+from order_items oi
+where oi.product_id  in ( select p.product_id from products p  where p.product_category_name  in ('perfumaria', 'artes'))
+
+
+
+--  Qual o número de pedido com o tipo de pagamento igual a “boleto
+
+select count( distinct o.order_id ) as order_id
+from orders o 
+where o.order_id in (select op.order_id    from order_payments op    where op.payment_type  = 'boleto')
+
+
+
+--  Refaça o exercício 01 usando união de tabelas.
+
+select count(distinct o.order_id)
+from orders o left join order_payments op  on ( op.order_id = o.order_id )
+where op.payment_type = 'boleto';
+
+
+
+-- Cria uma tabela que mostre a média de avaliações por dia, a média de preço por dia, a soma 
+--dos preços por dia, o preço mínimo por dia, o número de pedidos por dia e o número de clientes
+--únicos que compraram no dia
+
+select o.order_approved_at as datas,   avg(ors.review_score ), avg(oi.price ), sum(oi.price ), min(oi.price), count( distinct o.order_id ), count(distinct c.customer_id)
+from orders o left join order_reviews ors on (ors.order_id =o.order_id) left join order_items oi on( oi.order_id  = o.order_id) left join customer c on (c.customer_id = o.customer_id )
+group by date(o.order_approved_at )
+order by datas desc
+limit 15;
+
+
 
 
 
